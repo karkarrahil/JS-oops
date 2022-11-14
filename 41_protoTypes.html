@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>prototypes</title>
+</head>
+<body>
+    <h2>SBI jandhan</h2>
+    <form action="#" id="accountForm">
+        <input type="text" name="customerName" id="customerName" placeholder="customerName" />
+        <input type="number" name="balance" id="customerBalance" placeholder="customerBalance" />
+        <button type="submit">submit</button>
+    </form>
+    <hr>
+
+    deposit
+    <br>
+    <br>
+    <form action="#" id="depositForm">
+        <input type="number" name="depositValue" id="depositValue" placeholder="Amount" />
+        <input type="number" name="accountNumber" id="accountNumber" placeholder="Account number" />
+        <button type="submit">submit</button>
+    </form>
+    <br>
+    <br>
+    windward
+    <form action="#" id="withdrowForm">
+        <input type="number" name="withdrawValue" id="withdrawValue" placeholder="Amount" />
+        <input type="number" name="accountNumber" id="accountNumber1" placeholder="Account number" />
+        <button type="submit">submit</button>
+    </form>
+
+    <script>
+        function CreateAccount(name,balance=0) {
+            this.name = name;
+            this.accountNumber = Date.now();
+            this.balance = +balance;
+
+            // this.deposit = (amount) => {
+            //     this.balance += +amount;
+            // }
+            // this.windward = (amount) => {
+            //     this.balance -= amount
+            // }
+        }
+
+        let accounts = []
+        const accountForm = document.getElementById('accountForm');
+        CreateAccount.prototype.deposit = function(amount){
+            this.balance += +amount;
+        }
+        CreateAccount.prototype.withdraw = function(amount){
+            this.balance -= amount;
+        }
+        const depositForm = document.getElementById('depositForm');
+        accountForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const customerName = document.getElementById('customerName');
+            const balance = document.getElementById('customerBalance');
+            const account = new CreateAccount(customerName.value, +balance.value);
+            customerName.value = ''
+            balance.value = ''
+            accounts.push(account);
+            console.log(accounts);
+        });
+
+        let accountNumber = document.getElementById('accountNumber');
+        let deposit = document.getElementById('depositValue');
+        depositForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            try {
+                const account = accounts.find((account) => account.accountNumber === +accountNumber.value)
+                account.deposit(+deposit.value)
+                console.log(accounts)
+            } catch (error) {
+                console.error('Please enter a valid accountNumber')
+            }
+
+            accountNumber.value = ''
+            deposit.value = ''
+        })
+        const withdrawForm = document.getElementById('withdrowForm')
+        const accountNumber1 = document.getElementById('accountNumber1');
+        const withdrawValue = document.getElementById('withdrawValue');
+        withdrawForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            try {
+                const account = accounts.find((account) => account.accountNumber === +accountNumber1.value)
+                account.windward(+withdrawValue.value)
+                console.log(accounts)
+            } catch (error) {
+                console.error('Please enter a valid accountNumber')
+            }
+
+            accountNumber.value = ''
+            deposit.value = ''
+        })
+       
+    </script>
+
+
+</body>
+</html>
